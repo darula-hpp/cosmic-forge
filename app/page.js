@@ -2,7 +2,7 @@
 
 // src/components/SendASA.js
 import React, { useEffect, useState } from "react";
-import algosdk from "algosdk";
+import algosdk, {makeAssetTransferTxnWithSuggestedParamsFromObject} from "algosdk";
 import { PeraWalletConnect } from "@perawallet/connect";
 
 // MainNet Algod client
@@ -49,9 +49,9 @@ const SendASA = () => {
       const params = await algodClient.getTransactionParams().do();
       console.log('1#', params)
 
-      const txn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
-        from: account,
-        to: receiver,
+      const txn = makeAssetTransferTxnWithSuggestedParamsFromObject({
+        sender: account,
+        receiver,
         assetIndex: assetId,
         amount: amountToSend,
         suggestedParams: params,
@@ -64,7 +64,7 @@ const SendASA = () => {
 
       const { txId } = await algodClient.sendRawTransaction(signedTxns).do();
       console.log('4#')
-      await algosdk.waitForConfirmation(algodClient, txId, 4);
+      await algosdk.waitForConfirmation(algodClient, txId, 10);
       console.log('5#')
 
       alert(`ASA sent! TX ID: ${txId}`);
