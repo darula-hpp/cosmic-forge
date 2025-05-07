@@ -62,12 +62,12 @@ const SendASA = () => {
       const signedTxns = await peraWallet.signTransaction([txnGroup]);
       console.log('3#')
 
-      const { txId } = await algodClient.sendRawTransaction(signedTxns).do();
+      const { txid } = await algodClient.sendRawTransaction(signedTxns).do();
       console.log('4#')
-      await algosdk.waitForConfirmation(algodClient, txId, 10);
+      await algosdk.waitForConfirmation(algodClient, txid, 10);
       console.log('5#')
 
-      alert(`ASA sent! TX ID: ${txId}`);
+      alert(`ASA sent! TX ID: ${txid}`);
     } catch (error) {
       console.error("ASA transaction failed", error);
     }
